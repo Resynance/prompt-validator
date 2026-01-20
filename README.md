@@ -61,8 +61,8 @@ The project includes an automated test suite covering both the database layer an
 
 1.  **Prep Test Database**:
     ```bash
-    psql -U maxturner -d postgres -c "CREATE DATABASE prompt_similarity_test OWNER promptmanager;"
-    psql -U maxturner -d prompt_similarity_test -c "CREATE EXTENSION IF NOT EXISTS vector;"
+    psql -U promptmanager -d postgres -c "CREATE DATABASE prompt_similarity_test OWNER promptmanager;"
+    psql -U promptmanager -d prompt_similarity_test -c "CREATE EXTENSION IF NOT EXISTS vector;"
     ```
 2.  **Run Tests**:
     ```bash
