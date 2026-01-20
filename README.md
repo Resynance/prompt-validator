@@ -1,51 +1,66 @@
 # Prompt Similarity Detector
+Developed by **Max Turner** ([Resynance](https://github.com/Resynance))
 
-This tool uses LM Studio and PostgreSQL with `pgvector` to identify similar or duplicate QA prompts.
+A modern, hierarchical tool for managing LLM prompts with intelligent similarity detection and compliance checking. Built with FastAPI, PostgreSQL (`pgvector`), and LM Studio.
+
+## Key Features
+
+- **Hierarchical Management**: Organize prompts under **Projects** and **Environments**.
+- **Interactive Header Navigation**: Quickly switch between projects and environments directly in the header.
+- **Intelligent Check & Auto-Save**: Analyze prompts for compliance and similarity; unique prompts are automatically saved to the database.
+- **Dedicated Settings View**: Centralized management for LM Studio URLs and technical troubleshooting (Database Reset).
+- **Persistent Configuration**: LM Studio URL is remembered across sessions using local storage.
+- **PDF Requirement Import**: Extract project requirements directly from PDF documents.
+- **Dark Mode UI**: A premium, glassmorphism-inspired dark theme.
 
 ## Prerequisites
 
 1.  **LM Studio**:
-    *   Open LM Studio.
-    *   Load an embedding model (e.g., `text-embedding-nomic-embed-text-v1.5` or similar).
-    *   Start the **Local Server** (usually on port 1234).
+    *   Load an embedding model (`Llama-3-8B-Instruct` recommended) and a chat model (e.g., `Llama-3-8B-Instruct`).
+    *   Start the **Local Server** (default: `http://localhost:1234/v1`).
 2.  **PostgreSQL**:
-    *   Ensure PostgreSQL is running.
-    *   The tool creates a database named `prompt_similarity` and a table `prompts`.
-    *   The `pgvector` extension must be installed.
+    *   Ensure PostgreSQL is running with the `pgvector` extension installed.
+    *   The app will automatically manage the `prompt_similarity` database schema.
 
 ## Setup
 
-1.  Navigate to the project directory:
-    ```bash
-    cd "Prompt Similarity Detector"
-    ```
-2.  Activate the virtual environment:
+1.  **Environment**:
     ```bash
     source venv/bin/activate
+    pip install -r requirements.txt
     ```
+2.  **Start the Server**:
+    ```bash
+    python3 app.py
+    ```
+3.  **Access the App**: Open [http://localhost:8000](http://localhost:8000)
 
-## Usage
+## Deployment Options
 
-Run the `similarity_check.py` script with the project name and the prompt you want to check. 
+### Standard (Local)
+Follow the [Setup](#setup) instructions above to run directly on your host machine.
 
-> [!TIP]
-> If you get a connection error, LM Studio might be on a different port. Use the `--url` flag to specify it (e.g., if LM Studio is on port 41343).
-
+### Docker (Recommended for Portability)
+Deploy the entire stack (App + DB) with a single command:
 ```bash
-python similarity_check.py --project "MyProject" --prompt "This is a test prompt." --url http://localhost:41343/v1
+docker-compose up --build
 ```
+See the [Docker Setup Guide](Documentation/docker_setup.md) for detailed configuration.
 
-### Options
+## How It Works
 
-*   `--project`: The name of the project (required).
-*   `--prompt`: The prompt text to check (required).
-*   `--url`: The base URL for LM Studio API (default: `http://localhost:1234/v1`).
-*   `--threshold`: The similarity threshold (0.0 to 1.0, default: 0.85).
+1.  **Compliance Analysis**: Compares your input prompt against project-level requirements using LLM reasoning.
+2.  **Embedding Generation**: Creates a high-dimensional vector of your prompt using LM Studio.
+3.  **Similarity Search**: Uses `pgvector` to find existing prompts with high cosine similarity in the selected environment.
+4.  **Auto-Persistence**: If no similarities are found, the prompt is saved immediately. If matches exist, you have the option to "Save anyway".
 
-## How it works
+## Technical Troubleshooting
 
-1.  Generates an embedding for the input prompt using LM Studio's `/embeddings` endpoint.
-2.  Queries the PostgreSQL database for existing prompts in the same project.
-3.  Calculates cosine similarity using `pgvector`.
-4.  If similar prompts are found, it lists them and asks for confirmation before saving.
-5.  If no similar prompts are found (or if you confirm), it saves the new prompt to the database.
+If you switch embedding models in LM Studio (e.g., from 1536-dim to 768-dim), navigate to the **Settings** page and click **"Reset Prompt Database"**. This will re-initialize the database schema to match your current model's dimensions.
+
+## Developer Resources
+
+- [Web Interface User Guide](Documentation/ui_guide.md): Visual and functional walkthrough of the UI.
+- [PostgreSQL & pgvector Setup](Documentation/postgres_setup.md): Installation guide for Windows and macOS.
+- [Docker Setup Guide](Documentation/docker_setup.md): Containerized deployment instructions.
+- [REST API Documentation](Documentation/api_docs.md): Technical details for programmatic interaction.
