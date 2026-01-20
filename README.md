@@ -20,6 +20,7 @@ A modern, hierarchical tool for managing LLM prompts with intelligent similarity
     *   Start the **Local Server** (default: `http://localhost:1234/v1`).
 2.  **PostgreSQL**:
     *   Ensure PostgreSQL is running with the `pgvector` extension installed.
+    *   See the [PostgreSQL & pgvector Setup Guide](Documentation/postgres_setup.md) for detailed installation and user configuration steps.
     *   The app will automatically manage the `prompt_similarity` database schema.
 
 ## Setup

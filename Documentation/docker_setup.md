@@ -29,7 +29,7 @@ The orchestration is managed via `docker-compose.yml`. You can customize the beh
 | :--- | :--- | :--- |
 | `DB_HOST` | Database host name | `db` |
 | `DB_NAME` | Database name | `prompt_similarity` |
-| `DB_USER` | Database user | `postgres` |
+| `DB_USER` | Database user | `promptmanager` |
 | `DB_PASSWORD` | Database password | `password` |
 | `LM_STUDIO_URL` | URL to host's LM Studio | `http://host.docker.internal:1234/v1` |
 

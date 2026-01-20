@@ -43,9 +43,11 @@ Once PostgreSQL is installed and running, you need to enable the `pgvector` exte
     ```bash
     psql -U postgres
     ```
-2.  **Create the Database**:
+2.  **Create the Database & User**:
     ```sql
     CREATE DATABASE prompt_similarity;
+    CREATE USER promptmanager WITH PASSWORD 'yourpassword';
+    GRANT ALL PRIVILEGES ON DATABASE prompt_similarity TO promptmanager;
     \c prompt_similarity;
     ```
 3.  **Enable pgvector**:
@@ -61,10 +63,9 @@ By default, the application connects to PostgreSQL using the following parameter
 *   **Host**: `localhost`
 *   **Port**: `5432`
 *   **Database**: `prompt_similarity`
-*   **User**: `postgres`
+*   **User**: `promptmanager`
 
-> [!NOTE]
-> If you have a password set for your `postgres` user, ensure your environment is configured to handle the connection (e.g., via a `.env` file or system environment variables).
+> If you have a password set for your `promptmanager` user, ensure your environment is configured to handle the connection (e.g., via a `.env` file or system environment variables).
 
 ## 5. Model Compatibility
 
