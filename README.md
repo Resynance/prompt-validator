@@ -55,6 +55,22 @@ See the [Docker Setup Guide](Documentation/docker_setup.md) for detailed configu
 3.  **Similarity Search**: Uses `pgvector` to find existing prompts with high cosine similarity in the selected environment.
 4.  **Auto-Persistence**: If no similarities are found, the prompt is saved immediately. If matches exist, you have the option to "Save anyway".
 
+## Testing
+
+The project includes an automated test suite covering both the database layer and the API.
+
+1.  **Prep Test Database**:
+    ```bash
+    psql -U maxturner -d postgres -c "CREATE DATABASE prompt_similarity_test OWNER promptmanager;"
+    psql -U maxturner -d prompt_similarity_test -c "CREATE EXTENSION IF NOT EXISTS vector;"
+    ```
+2.  **Run Tests**:
+    ```bash
+    source venv/bin/activate
+    export PYTHONPATH=$PYTHONPATH:.
+    pytest tests/
+    ```
+
 ## Technical Troubleshooting
 
 If you switch embedding models in LM Studio (e.g., from 1536-dim to 768-dim), navigate to the **Settings** page and click **"Reset Prompt Database"**. This will re-initialize the database schema to match your current model's dimensions.
@@ -64,4 +80,5 @@ If you switch embedding models in LM Studio (e.g., from 1536-dim to 768-dim), na
 - [Web Interface User Guide](Documentation/ui_guide.md): Visual and functional walkthrough of the UI.
 - [PostgreSQL & pgvector Setup](Documentation/postgres_setup.md): Installation guide for Windows and macOS.
 - [Docker Setup Guide](Documentation/docker_setup.md): Containerized deployment instructions.
+- [Testing Guide](Documentation/testing_guide.md): Details on the automated test suite and how to run it.
 - [REST API Documentation](Documentation/api_docs.md): Technical details for programmatic interaction.
