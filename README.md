@@ -80,5 +80,6 @@ If you switch embedding models in LM Studio (e.g., from 1536-dim to 768-dim), na
 - [Web Interface User Guide](Documentation/ui_guide.md): Visual and functional walkthrough of the UI.
 - [PostgreSQL & pgvector Setup](Documentation/postgres_setup.md): Installation guide for Windows and macOS.
 - [Docker Setup Guide](Documentation/docker_setup.md): Containerized deployment instructions.
+- [System Architecture & Tech Stack](Documentation/architecture.md): Technical diagrams and component breakdowns.
 - [Testing Guide](Documentation/testing_guide.md): Details on the automated test suite and how to run it.
 - [REST API Documentation](Documentation/api_docs.md): Technical details for programmatic interaction.
