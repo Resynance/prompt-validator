@@ -42,8 +42,8 @@ async def list_projects():
     db = DBManager()
     try:
         with db.conn.cursor(cursor_factory=None) as cur:
-            cur.execute("SELECT name, requirements FROM projects ORDER BY name;")
-            projects = [{"name": row[0], "requirements": row[1]} for row in cur.fetchall()]
+            cur.execute("SELECT name, requirements, created_at FROM projects ORDER BY name;")
+            projects = [{"name": row[0], "requirements": row[1], "created_at": row[2]} for row in cur.fetchall()]
             return projects
     finally:
         db.close()
@@ -75,8 +75,8 @@ async def list_environments(project_name: str):
             raise HTTPException(status_code=404, detail="Project not found")
         
         with db.conn.cursor(cursor_factory=None) as cur:
-            cur.execute("SELECT name FROM environments WHERE project_id = %s ORDER BY name;", (project['id'],))
-            envs = [{"name": row[0]} for row in cur.fetchall()]
+            cur.execute("SELECT name, created_at FROM environments WHERE project_id = %s ORDER BY name;", (project['id'],))
+            envs = [{"name": row[0], "created_at": row[1]} for row in cur.fetchall()]
             return envs
     finally:
         db.close()

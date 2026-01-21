@@ -11,6 +11,7 @@ A modern, hierarchical tool for managing LLM prompts with intelligent similarity
 - **Dedicated Settings View**: Centralized management for LM Studio URLs and technical troubleshooting (Database Reset).
 - **Persistent Configuration**: LM Studio URL is remembered across sessions using local storage.
 - **PDF Requirement Import**: Extract project requirements directly from PDF documents.
+- **Historical Tracking**: Every project, environment, and prompt is timestamped, providing a full audit trail of your prompt library's evolution.
 - **Dark Mode UI**: A premium, glassmorphism-inspired dark theme.
 
 ## Prerequisites
@@ -81,5 +82,6 @@ If you switch embedding models in LM Studio (e.g., from 1536-dim to 768-dim), na
 - [PostgreSQL & pgvector Setup](Documentation/postgres_setup.md): Installation guide for Windows and macOS.
 - [Docker Setup Guide](Documentation/docker_setup.md): Containerized deployment instructions.
 - [System Architecture & Tech Stack](Documentation/architecture.md): Technical diagrams and component breakdowns.
+- [AWS & Multi-User Roadmap](Documentation/aws_and_multiuser_roadmap.md): Strategy for scaling to the cloud and multiple tenants.
 - [Testing Guide](Documentation/testing_guide.md): Details on the automated test suite and how to run it.
 - [REST API Documentation](Documentation/api_docs.md): Technical details for programmatic interaction.

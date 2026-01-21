@@ -164,10 +164,11 @@ function renderManagement() {
     projectsListBody.innerHTML = '';
     projects.forEach(p => {
         const tr = document.createElement('tr');
+        const date = new Date(p.created_at).toLocaleDateString();
         tr.innerHTML = `
             <td><strong>${p.name}</strong></td>
             <td><div class="req-preview" title="${p.requirements || ''}">${p.requirements || 'No requirements defined.'}</div></td>
-            <td>${new Date().toLocaleDateString()}</td>
+            <td>${date}</td>
             <td>
                 <button class="action-btn" onclick="openEditProject('${p.name}')">Edit</button>
                 <button class="action-btn" onclick="showEnvManagement('${p.name}')">Envs</button>
@@ -215,9 +216,10 @@ window.showEnvManagement = async (name) => {
 
         envs.forEach(e => {
             const tr = document.createElement('tr');
+            const date = new Date(e.created_at).toLocaleDateString();
             tr.innerHTML = `
                 <td>${e.name}</td>
-                <td>${new Date().toLocaleDateString()}</td>
+                <td>${date}</td>
                 <td>
                     <button class="action-btn" onclick="clearEnvironmentPrompts('${p.name}', '${e.name}')">Clear Prompts</button>
                     <button class="action-btn delete" onclick="deleteEnvironment('${p.name}', '${e.name}')">Delete</button>
@@ -372,15 +374,21 @@ function renderResults(data) {
         <div class="card-body" style="padding: 24px;">
             ${data.similar_prompts.length === 0 ? '<p style="color: var(--text-dim);">No similar prompts found in this environment. Prompt automatically saved.</p>' : ''}
             <div style="display: flex; flex-direction: column; gap: 16px;">
-                ${data.similar_prompts.map(p => `
+                ${data.similar_prompts.map(p => {
+        const date = new Date(p.created_at);
+        const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        return `
                     <div style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 16px;">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.8rem; color: var(--text-dim);">
                             <span style="color: var(--primary); font-weight: 600;">${(p.similarity * 100).toFixed(1)}% Similarity</span>
-                            <span>ID: ${p.id}</span>
+                            <div>
+                                <span style="margin-right: 12px;">${formattedDate}</span>
+                                <span>ID: ${p.id}</span>
+                            </div>
                         </div>
                         <p style="font-size: 0.85rem; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">${p.prompt_text}</p>
                     </div>
-                `).join('')}
+                `}).join('')}
             </div>
         </div>
     `;

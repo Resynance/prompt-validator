@@ -26,7 +26,7 @@ This is where you'll spend most of your time analyzing prompts.
 2.  **Analyze**: Click **"Analyze Prompt"** to trigger the background processing.
 3.  **Review Results**:
     *   **Compliance Analysis**: View LLM-generated feedback on how well your prompt aligns with the project's defined requirements.
-    *   **Similarity Matches**: See existing prompts that are similar to your input.
+    *   **Similarity Matches**: See existing prompts that are similar to your input. **Creation timestamps** are displayed alongside each match to provide historical context.
     *   **Intelligent Auto-Save**: If no similar prompts are found, the system saves your prompt automatically. If matches exist, you can choose to **"Save to Database"** manually.
 
 ---
@@ -38,11 +38,12 @@ Manage the hierarchy of your prompt library.
 ### Projects
 *   **Add Project**: Create a new project container.
 *   **Edit Requirements**: Update the compliance criteria for a project.
+*   **Creation History**: View the exact date each project was initialized.
 *   **PDF Import**: In the project modal, use the **"Import PDF"** button to automatically extract requirements from a PDF document.
 *   **Delete**: Remove a project and all its nested data.
 
 ### Environments
-*   **Manage Envs**: Click **"Envs"** next to a project to see its specific environments.
+*   **Manage Envs**: Click **"Envs"** next to a project to see its specific environments and their **creation dates**.
 *   **Clear Prompts**: Delete all saved prompts within a specific environment while keeping the environment configuration intact.
 *   **Delete Env**: Remove an environment entirely.
 

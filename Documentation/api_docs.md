@@ -15,8 +15,8 @@ This document details the REST API endpoints available in the Prompt Manager bac
 *   **Response**: `200 OK`
     ```json
     [
-      { "name": "Project A", "requirements": "Requirement text..." },
-      { "name": "Project B", "requirements": "Requirement text..." }
+      { "name": "Project A", "requirements": "Requirement text...", "created_at": "2026-01-20T22:54:02" },
+      { "name": "Project B", "requirements": "Requirement text...", "created_at": "2026-01-20T22:54:02" }
     ]
     ```
 
@@ -60,8 +60,8 @@ This document details the REST API endpoints available in the Prompt Manager bac
 *   **Response**: `200 OK`
     ```json
     [
-      { "name": "Production" },
-      { "name": "Staging" }
+      { "name": "Production", "created_at": "2026-01-20T22:54:02" },
+      { "name": "Staging", "created_at": "2026-01-20T22:54:02" }
     ]
     ```
 
@@ -108,7 +108,7 @@ This document details the REST API endpoints available in the Prompt Manager bac
     {
       "requirement_analysis": "Reasoning about compliance...",
       "similar_prompts": [
-        { "id": 101, "prompt_text": "Existing prompt...", "similarity": 0.92 }
+        { "id": 101, "prompt_text": "Existing prompt...", "similarity": 0.92, "created_at": "2026-01-20T22:54:02" }
       ],
       "prompt_text": "The input prompt",
       "environment_id": 1,

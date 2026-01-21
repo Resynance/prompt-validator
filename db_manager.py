@@ -138,7 +138,7 @@ class DBManager:
         try:
             with self.conn.cursor(cursor_factory=RealDictCursor) as cur:
                 cur.execute("""
-                    SELECT id, prompt_text, 1 - (embedding <=> %s::vector) AS similarity
+                    SELECT id, prompt_text, created_at, 1 - (embedding <=> %s::vector) AS similarity
                     FROM prompts
                     WHERE environment_id = %s
                     AND 1 - (embedding <=> %s::vector) > %s
