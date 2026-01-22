@@ -20,7 +20,9 @@ const promptEditor = document.getElementById('prompt-editor');
 const runCheckBtn = document.getElementById('run-check');
 const resultsArea = document.getElementById('results-area');
 const lmStudioUrlInput = document.getElementById('lm-studio-url');
+const appVersionSpan = document.getElementById('app-version');
 
+let currentProject = null;
 // DOM Elements - Management
 const projectsListBody = document.getElementById('projects-list-body');
 const envManageCard = document.getElementById('env-manage-card');
@@ -40,10 +42,28 @@ const modalEnvName = document.getElementById('modal-env-name');
 const saveProjectBtn = document.getElementById('save-project-btn');
 const saveEnvBtn = document.getElementById('save-env-btn');
 
-async function init() {
-    // Load saved URL from local storage
+async function fetchAppInfo() {
+    try {
+        const response = await fetch('/api/info');
+        if (response.ok) {
+            const data = await response.json();
+            if (appVersionSpan) { // Check if the element exists before trying to set textContent
+                appVersionSpan.textContent = `v${data.version}`;
+            }
+        }
+    } catch (err) {
+        console.error("Failed to fetch app info:", err);
+    }
+}
+
+function loadLMStudioUrl() {
     const savedUrl = localStorage.getItem('lm-studio-url');
     if (savedUrl) lmStudioUrlInput.value = savedUrl;
+}
+
+async function init() {
+    await fetchAppInfo();
+    loadLMStudioUrl();
 
     setupEventListeners();
     await fetchProjects();

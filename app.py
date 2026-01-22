@@ -10,6 +10,8 @@ from io import BytesIO
 from db_manager import DBManager
 from similarity_check import get_embedding, analyze_requirements
 
+VERSION = "0.5.0"
+
 app = FastAPI(title="Prompt Manager API")
 
 # Mount static files for the frontend
@@ -37,6 +39,15 @@ class CheckRequest(BaseModel):
 @app.get("/")
 async def read_index():
     return FileResponse("static/index.html")
+
+@app.get("/api/info")
+async def get_info():
+    """Returns application version and status."""
+    return {
+        "version": VERSION,
+        "status": "healthy",
+        "name": "Prompt Similarity Detector"
+    }
 
 @app.get("/api/projects")
 async def list_projects():

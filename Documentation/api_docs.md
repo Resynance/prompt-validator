@@ -156,3 +156,11 @@ This document details the REST API endpoints available in the Prompt Manager bac
     ```json
     { "message": "Prompt database reset to 768 dimensions" }
     ```
+
+### Get System Info
+*   **Endpoint**: `GET /api/info`
+*   **Description**: Returns current application version and status.
+*   **Response**: `200 OK`
+    ```json
+    { "version": "0.5.0", "status": "healthy", "name": "Prompt Similarity Detector" }
+    ```
