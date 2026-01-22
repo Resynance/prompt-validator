@@ -3,18 +3,26 @@ from db_manager import DBManager
 
 def test_project_lifecycle(db):
     # Create project
-    project_id = db.create_project("test_project", "Test Requirements")
+    project_id = db.create_project("test_project", "Test Requirements", "Test Focus")
     assert project_id is not None
     
     # Get project
     project = db.get_project("test_project")
     assert project['name'] == "test_project"
     assert project['requirements'] == "Test Requirements"
+    assert project['project_focus'] == "Test Focus"
     
-    # Update project
-    db.create_project("test_project", "Updated Requirements")
+    # Update project via create_project (UPSERT)
+    db.create_project("test_project", "Updated Requirements", "Updated Focus")
     project = db.get_project("test_project")
     assert project['requirements'] == "Updated Requirements"
+    assert project['project_focus'] == "Updated Focus"
+
+    # Test partial update via update_project
+    db.update_project("test_project", project_focus="Partial Focus")
+    project = db.get_project("test_project")
+    assert project['requirements'] == "Updated Requirements"
+    assert project['project_focus'] == "Partial Focus"
     
     # Delete project
     db.delete_project("test_project")
@@ -22,7 +30,7 @@ def test_project_lifecycle(db):
     assert project is None
 
 def test_environment_lifecycle(db):
-    db.create_project("p1")
+    db.create_project("p1", "req1")
     
     # Create environment
     env_id = db.create_environment("p1", "staging")
@@ -39,7 +47,7 @@ def test_environment_lifecycle(db):
     assert env is None
 
 def test_prompt_persistence_and_similarity(db):
-    db.create_project("p1")
+    db.create_project("p1", "req1")
     env_id = db.create_environment("p1", "prod")
     
     # Save a prompt (using distinct embedding)

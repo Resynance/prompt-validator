@@ -21,6 +21,7 @@ def db(db_config, mocker):
     mocker.patch("app.DBManager", side_effect=lambda *args, **kwargs: DBManager(**db_config))
     
     manager = DBManager(**db_config)
+    manager._ensure_schema()
     yield manager
     
     # Cleanup after each test

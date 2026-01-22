@@ -6,8 +6,9 @@ A modern, hierarchical tool for managing LLM prompts with intelligent similarity
 ## Key Features
 
 - **Hierarchical Management**: Organize prompts under **Projects** and **Environments**.
+- **Project Focus**: Define optional focus areas (e.g., "Performance", "Clean Code") for more granular compliance checking.
+- **Mandatory Requirements**: Every project requires defined requirements to ensure consistent compliance analysis.
 - **Interactive Header Navigation**: Quickly switch between projects and environments directly in the header.
-- **Intelligent Check & Auto-Save**: Analyze prompts for compliance and similarity; unique prompts are automatically saved to the database.
 - **Dedicated Settings View**: Centralized management for LM Studio URLs and technical troubleshooting (Database Reset).
 - **Persistent Configuration**: LM Studio URL is remembered across sessions using local storage.
 - **PDF Requirement Import**: Extract project requirements directly from PDF documents.
@@ -51,10 +52,11 @@ See the [Docker Setup Guide](Documentation/docker_setup.md) for detailed configu
 
 ## How It Works
 
-1.  **Compliance Analysis**: Compares your input prompt against project-level requirements using LLM reasoning.
+1.  **Compliance Analysis**: Compares your input prompt against **Core Requirements** and specific **Project Focus** areas using LLM reasoning. Satisfactory prompts receive descriptive positive feedback.
 2.  **Embedding Generation**: Creates a high-dimensional vector of your prompt using LM Studio.
 3.  **Similarity Search**: Uses `pgvector` to find existing prompts with high cosine similarity in the selected environment.
 4.  **Auto-Persistence**: If no similarities are found, the prompt is saved immediately. If matches exist, you have the option to "Save anyway".
+5.  **Button Protection**: The interface prevents duplicate submissions by disabling the action button during active analysis.
 
 ## Testing
 

@@ -15,8 +15,12 @@ This document details the REST API endpoints available in the Prompt Manager bac
 *   **Response**: `200 OK`
     ```json
     [
-      { "name": "Project A", "requirements": "Requirement text...", "created_at": "2026-01-20T22:54:02" },
-      { "name": "Project B", "requirements": "Requirement text...", "created_at": "2026-01-20T22:54:02" }
+      { 
+        "name": "Project A", 
+        "requirements": "Requirement text...", 
+        "project_focus": "Focus areas...",
+        "created_at": "2026-01-20T22:54:02" 
+      }
     ]
     ```
 
@@ -26,13 +30,26 @@ This document details the REST API endpoints available in the Prompt Manager bac
     ```json
     {
       "name": "Project Name",
-      "requirements": "Optional requirements text"
+      "requirements": "Mandatory requirements text",
+      "project_focus": "Optional focus areas for prompts"
     }
     ```
 *   **Response**: `200 OK`
     ```json
     { "id": 1, "name": "Project Name", "message": "Project created/updated" }
     ```
+
+### Update Project Details
+*   **Endpoint**: `PATCH /api/projects/{name}`
+*   **Description**: Partially update project requirements or focus.
+*   **Request Body**:
+    ```json
+    {
+      "requirements": "New requirements text (optional)",
+      "project_focus": "New focus text (optional)"
+    }
+    ```
+*   **Response**: `200 OK`
 
 ### Delete Project
 *   **Endpoint**: `DELETE /api/projects/{name}`

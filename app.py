@@ -19,7 +19,8 @@ LM_STUDIO_DEFAULT_URL = os.getenv("LM_STUDIO_URL", "http://localhost:1234/v1")
 
 class ProjectCreate(BaseModel):
     name: str
-    requirements: Optional[str] = None
+    requirements: str
+    project_focus: Optional[str] = None
 
 class EnvironmentCreate(BaseModel):
     project_name: str
@@ -42,8 +43,8 @@ async def list_projects():
     db = DBManager()
     try:
         with db.conn.cursor(cursor_factory=None) as cur:
-            cur.execute("SELECT name, requirements, created_at FROM projects ORDER BY name;")
-            projects = [{"name": row[0], "requirements": row[1], "created_at": row[2]} for row in cur.fetchall()]
+            cur.execute("SELECT name, requirements, created_at, project_focus FROM projects ORDER BY name;")
+            projects = [{"name": row[0], "requirements": row[1], "created_at": row[2], "project_focus": row[3]} for row in cur.fetchall()]
             return projects
     finally:
         db.close()
@@ -61,8 +62,17 @@ async def delete_project(name: str):
 async def create_project(data: ProjectCreate):
     db = DBManager()
     try:
-        pid = db.create_project(data.name, data.requirements)
+        pid = db.create_project(data.name, data.requirements, data.project_focus)
         return {"id": pid, "name": data.name, "message": "Project created/updated"}
+    finally:
+        db.close()
+
+@app.patch("/api/projects/{name}")
+async def update_project(name: str, data: dict = Body(...)):
+    db = DBManager()
+    try:
+        db.update_project(name, requirements=data.get("requirements"), project_focus=data.get("project_focus"))
+        return {"message": f"Project '{name}' updated"}
     finally:
         db.close()
 
@@ -119,7 +129,13 @@ async def check_prompt(req: CheckRequest):
             raise HTTPException(status_code=404, detail=f"Environment '{req.environment}' for project '{req.project}' not found")
 
         # 1. Requirement Analysis
-        req_analysis = analyze_requirements(req.prompt, env_data['requirements'], req.url, req.model)
+        req_analysis = analyze_requirements(
+            req.prompt, 
+            env_data['requirements'], 
+            req.url, 
+            model_name=req.model,
+            project_focus=env_data.get('project_focus')
+        )
         
         # 2. Embedding
         embedding = get_embedding(req.prompt, req.url, req.model)

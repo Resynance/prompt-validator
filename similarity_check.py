@@ -37,7 +37,7 @@ def get_embedding(prompt, base_url, model_name=None):
     except Exception as e:
         raise RuntimeError(f"Error getting embedding from LM Studio (Model: {model_name}): {e}")
 
-def analyze_requirements(prompt, requirements, base_url, model_name=None):
+def analyze_requirements(prompt, requirements, base_url, model_name=None, project_focus=None):
     if not requirements or requirements.strip() == "":
         return None
     
@@ -58,11 +58,19 @@ def analyze_requirements(prompt, requirements, base_url, model_name=None):
 
     url = f"{base_url}/chat/completions"
     system_prompt = (
-        "You are a Quality Assurance assistant. Your task is to compare a user's prompt against a set of project requirements. "
-        "Identify any conflicts or missing elements. If there are no issues, respond with 'NO ISSUES'. "
-        "If there are issues, list them clearly and concisely."
+        "You are a Quality Assurance assistant. Compare the user's prompt against the project requirements and focus areas. "
+        "Every response MUST start with either 'STATUS: PASSED' or 'STATUS: ISSUES FOUND' on the first line. "
+        "Following that, provide a very concise summary of the prompt's alignment with the requirements. "
+        "If satisfactory, explain briefly why it meets the criteria. "
+        "If there are conflicts or missing elements, provide a brief, bulleted list of specific issues. "
+        "Be extremely concise and avoid any introductory or concluding text."
     )
-    user_message = f"PROJECT REQUIREMENTS:\n{requirements}\n\nUSER PROMPT TO CHECK:\n{prompt}\n\nDoes the prompt meet all requirements? If not, why?"
+    
+    requirements_text = f"CORE REQUIREMENTS:\n{requirements}"
+    if project_focus:
+        requirements_text += f"\n\nPROJECT FOCUS AREAS:\n{project_focus}"
+        
+    user_message = f"{requirements_text}\n\nUSER PROMPT TO CHECK:\n{prompt}\n\nIssues found (if any):"
     
     payload = {
         "model": model_name,

@@ -35,6 +35,7 @@ const envModal = document.getElementById('env-modal');
 const addProjectBtn = document.getElementById('add-project-btn');
 const modalProjectName = document.getElementById('modal-project-name');
 const modalProjectReqs = document.getElementById('modal-project-reqs');
+const modalProjectFocus = document.getElementById('modal-project-focus');
 const modalEnvName = document.getElementById('modal-env-name');
 const saveProjectBtn = document.getElementById('save-project-btn');
 const saveEnvBtn = document.getElementById('save-env-btn');
@@ -168,6 +169,7 @@ function renderManagement() {
         tr.innerHTML = `
             <td><strong>${p.name}</strong></td>
             <td><div class="req-preview" title="${p.requirements || ''}">${p.requirements || 'No requirements defined.'}</div></td>
+            <td><div class="req-preview" title="${p.project_focus || ''}">${p.project_focus || '<span style="color: var(--text-dim);">None</span>'}</div></td>
             <td>${date}</td>
             <td>
                 <button class="action-btn" onclick="openEditProject('${p.name}')">Edit</button>
@@ -198,6 +200,7 @@ window.openEditProject = (name) => {
     if (!p) return;
     modalProjectName.value = p.name;
     modalProjectReqs.value = p.requirements || '';
+    modalProjectFocus.value = p.project_focus || '';
     projectModal.style.display = 'flex';
 };
 
@@ -280,6 +283,8 @@ async function runAnalysis() {
     }
 
     resultsArea.innerHTML = '<div class="loading">Analyzing Prompt Quality & Similarity...</div>';
+    runCheckBtn.disabled = true;
+    runCheckBtn.textContent = 'Analyzing...';
 
     try {
         const response = await fetch('/api/check', {
@@ -312,6 +317,9 @@ async function runAnalysis() {
                 ${actionBtn}
             </div>
         `;
+    } finally {
+        runCheckBtn.disabled = false;
+        runCheckBtn.textContent = 'Analyze Prompt';
     }
 }
 
@@ -345,14 +353,18 @@ function renderResults(data) {
     const reqCard = document.createElement('div');
     reqCard.className = 'result-card card animated';
     const analysisText = data.requirement_analysis || "";
-    let isPass = analysisText.includes('NO ISSUES');
+    let isPass = analysisText.includes('STATUS: PASSED');
+
+    // Remove the status marker from the displayed text
+    const displayAnalysis = analysisText.replace(/STATUS: (PASSED|ISSUES FOUND)\n?/, '');
+
     reqCard.innerHTML = `
         <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
             <h3>Requirement Compliance</h3>
             <span class="badge ${isPass ? 'success' : 'warning'}">${isPass ? 'PASSED' : 'CONFLICTS'}</span>
         </div>
         <div class="card-body" style="padding: 24px;">
-            <p style="white-space: pre-wrap; font-size: 0.95rem; line-height: 1.6;">${analysisText || "No requirements analysis performed."}</p>
+            <p style="white-space: pre-wrap; font-size: 0.95rem; line-height: 1.6;">${displayAnalysis || "No requirements analysis performed."}</p>
         </div>
     `;
     resultsArea.appendChild(reqCard);
@@ -457,6 +469,7 @@ function setupEventListeners() {
     addProjectBtn.onclick = () => {
         modalProjectName.value = '';
         modalProjectReqs.value = '';
+        modalProjectFocus.value = '';
         projectModal.style.display = 'flex';
     };
 
@@ -478,13 +491,22 @@ function setupEventListeners() {
     saveProjectBtn.onclick = async () => {
         const name = modalProjectName.value.trim();
         const requirements = modalProjectReqs.value.trim();
-        if (!name) return;
+        const projectFocus = modalProjectFocus.value.trim();
+
+        if (!name) {
+            alert('Project name is required.');
+            return;
+        }
+        if (!requirements) {
+            alert('Project requirements are mandatory.');
+            return;
+        }
 
         try {
             await fetch('/api/projects', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, requirements })
+                body: JSON.stringify({ name, requirements, project_focus: projectFocus || null })
             });
             projectModal.style.display = 'none';
             await fetchProjects();

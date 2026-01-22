@@ -21,15 +21,28 @@ class DBManager:
 
     def _ensure_schema(self, dim=1536):
         with self.conn.cursor() as cur:
-            cur.execute("CREATE EXTENSION IF NOT EXISTS vector;")
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS projects (
                     id SERIAL PRIMARY KEY,
                     name TEXT UNIQUE NOT NULL,
-                    requirements TEXT,
+                    requirements TEXT NOT NULL DEFAULT '',
+                    project_focus TEXT,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 );
             """)
+
+            # Migration: Ensure project_focus exists
+            cur.execute("SELECT column_name FROM information_schema.columns WHERE table_name='projects' AND column_name='project_focus';")
+            if not cur.fetchone():
+                cur.execute("ALTER TABLE projects ADD COLUMN project_focus TEXT;")
+
+            # Migration: Ensure requirements is NOT NULL
+            cur.execute("SELECT is_nullable FROM information_schema.columns WHERE table_name='projects' AND column_name='requirements';")
+            res = cur.fetchone()
+            if res and res[0] == 'YES':
+                # Update NULLs to empty string first
+                cur.execute("UPDATE projects SET requirements = '' WHERE requirements IS NULL;")
+                cur.execute("ALTER TABLE projects ALTER COLUMN requirements SET NOT NULL;")
             cur.execute("""
                 CREATE TABLE IF NOT EXISTS environments (
                     id SERIAL PRIMARY KEY,
@@ -67,17 +80,35 @@ class DBManager:
             self._ensure_schema(dim)
 
     # Project Management
-    def create_project(self, name, requirements=None):
+    def create_project(self, name, requirements, project_focus=None):
         try:
             with self.conn.cursor() as cur:
                 cur.execute(
-                    "INSERT INTO projects (name, requirements) VALUES (%s, %s) ON CONFLICT (name) DO UPDATE SET requirements = EXCLUDED.requirements RETURNING id;",
-                    (name.lower(), requirements)
+                    "INSERT INTO projects (name, requirements, project_focus) VALUES (%s, %s, %s) ON CONFLICT (name) DO UPDATE SET requirements = EXCLUDED.requirements, project_focus = EXCLUDED.project_focus RETURNING id;",
+                    (name.lower(), requirements, project_focus)
                 )
                 return cur.fetchone()[0]
         except psycopg2.errors.UndefinedTable:
             self._ensure_schema()
-            return self.create_project(name, requirements)
+            return self.create_project(name, requirements, project_focus)
+
+    def update_project(self, name, requirements=None, project_focus=None):
+        updates = []
+        params = []
+        if requirements is not None:
+            updates.append("requirements = %s")
+            params.append(requirements)
+        if project_focus is not None:
+            updates.append("project_focus = %s")
+            params.append(project_focus)
+        
+        if not updates:
+            return
+            
+        params.append(name.lower())
+        query = f"UPDATE projects SET {', '.join(updates)} WHERE name = %s;"
+        with self.conn.cursor() as cur:
+            cur.execute(query, tuple(params))
 
     def get_project(self, name):
         with self.conn.cursor(cursor_factory=RealDictCursor) as cur:

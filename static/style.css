@@ -162,6 +162,8 @@ body {
     flex-grow: 1;
     overflow-y: auto;
     background: transparent;
+    display: flex;
+    flex-direction: column;
 }
 
 .content-header {
@@ -396,6 +398,38 @@ td {
 
 .animated {
     animation: fadeIn 0.4s ease-out forwards;
+}
+
+.app-footer {
+    padding: 24px 40px;
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.disclaimer-bar {
+    background: rgba(124, 58, 237, 0.1);
+    border: 1px solid rgba(124, 58, 237, 0.3);
+    border-radius: 14px;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 0.85rem;
+    color: var(--text-main);
+    line-height: 1.5;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), inset 0 0 15px rgba(124, 58, 237, 0.05);
+    backdrop-filter: blur(12px);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.disclaimer-bar .icon {
+    font-size: 1.3rem;
+    filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.6));
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @keyframes fadeIn {

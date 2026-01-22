@@ -25,9 +25,11 @@ This is where you'll spend most of your time analyzing prompts.
 1.  **Input**: Enter your prompt text into the central editor.
 2.  **Analyze**: Click **"Analyze Prompt"** to trigger the background processing.
 3.  **Review Results**:
-    *   **Compliance Analysis**: View LLM-generated feedback on how well your prompt aligns with the project's defined requirements.
+    *   **Compliance Analysis**: View LLM-generated feedback on how well your prompt aligns with the project's **Core Requirements** and specific **Project Focus**.
     *   **Similarity Matches**: See existing prompts that are similar to your input. **Creation timestamps** are displayed alongside each match to provide historical context.
     *   **Intelligent Auto-Save**: If no similar prompts are found, the system saves your prompt automatically. If matches exist, you can choose to **"Save to Database"** manually.
+
+![Compliance Analysis Results](./Media/compliance_card_results_1769057043973.png)
 
 ---
 
@@ -36,11 +38,17 @@ This is where you'll spend most of your time analyzing prompts.
 Manage the hierarchy of your prompt library.
 
 ### Projects
-*   **Add Project**: Create a new project container.
-*   **Edit Requirements**: Update the compliance criteria for a project.
+*   **Add Project**: Create a new project container. **Requirements** are now mandatory for all new projects.
+*   **Project Focus**: Define optional focus areas (e.g., "Performance", "Clean Code") that prompts should adhere to.
+*   **Edit Details**: Update the requirements or focus areas for an existing project.
 *   **Creation History**: View the exact date each project was initialized.
 *   **PDF Import**: In the project modal, use the **"Import PDF"** button to automatically extract requirements from a PDF document.
 *   **Delete**: Remove a project and all its nested data.
+
+### 🎥 Feature Demonstration
+The following recording shows the complete workflow for managing projects and analyzing prompts:
+
+![UI Workflow Demonstration](./Media/feature_demo_final_v4_clean_1769056891397.webp)
 
 ### Environments
 *   **Manage Envs**: Click **"Envs"** next to a project to see its specific environments and their **creation dates**.
@@ -80,5 +88,6 @@ The quality of your analysis depends heavily on the models loaded in LM Studio.
 
 ## 6. UI Features
 *   **Glassmorphism Theme**: A premium dark theme with blur effects and sleek animations.
+*   **Disclaimer Footer Bar**: A persistent notice at the bottom of the application reminding users that AI feedback is for review assistance and not a definitive pass/fail.
 *   **Responsive State**: Sidebar selection and header dropdowns are always synchronized.
 *   **Detailed Feedback**: Tooltips and clear status badges (Success, Warning, Error) guide you through the analysis process.

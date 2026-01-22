@@ -59,6 +59,8 @@
                     </div>
                 </header>
 
+
+
                 <div class="checker-container" style="display: flex; gap: 24px; padding: 24px;">
                     <div class="editor-section" style="flex: 1.5;">
                         <div class="card">
@@ -108,6 +110,7 @@
                                     <tr>
                                         <th>Name</th>
                                         <th>Requirements</th>
+                                        <th>Project Focus</th>
                                         <th>Created</th>
                                         <th>Actions</th>
                                     </tr>
@@ -176,6 +179,15 @@
                     </div>
                 </div>
             </section>
+
+            <footer class="app-footer">
+                <div class="disclaimer-bar">
+                    <span class="icon">ℹ️</span>
+                    <p>Feedback given here should not determine pass or fail for a prompt. Instead, it serves as an
+                        additional review to compare the prompt against project requirements and spot any potential
+                        similarities with earlier prompts.</p>
+                </div>
+            </footer>
         </main>
     </div>
 
@@ -188,7 +200,7 @@
                 <input type="text" id="modal-project-name">
             </div>
             <div class="form-group">
-                <label>Requirements</label>
+                <label>Requirements <span style="color: #ef4444;">*</span></label>
                 <div class="requirements-header"
                     style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                     <span style="font-size: 0.85rem; color: var(--text-dim);">Enter text or import file</span>
@@ -196,7 +208,12 @@
                         style="padding: 4px 12px; font-size: 0.75rem;">Import PDF</button>
                     <input type="file" id="pdf-upload" accept=".pdf" style="display: none;">
                 </div>
-                <textarea id="modal-project-reqs" placeholder="e.g. Must be JSON, informal tone..."></textarea>
+                <textarea id="modal-project-reqs" placeholder="e.g. Must be JSON, informal tone..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Project Focus</label>
+                <textarea id="modal-project-focus" placeholder="e.g. Security, Performance, User Engagement..."
+                    style="height: 80px;"></textarea>
             </div>
             <div class="modal-actions">
                 <button class="secondary-btn modal-close">Cancel</button>

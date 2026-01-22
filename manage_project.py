@@ -6,6 +6,7 @@ def main():
     parser = argparse.ArgumentParser(description="Manage Projects for Prompt Similarity Detector")
     parser.add_argument("--name", required=True, help="Project name")
     parser.add_argument("--requirements", help="Project requirements text")
+    parser.add_argument("--focus", help="Project focus areas (e.g. 'Safety', 'Tone')")
     parser.add_argument("--file", help="Path to a file containing requirements")
     
     args = parser.parse_args()
@@ -19,9 +20,13 @@ def main():
             print(f"Error reading requirements from file: {e}")
             sys.exit(1)
             
+    if not requirements:
+        print("Error: Project requirements are mandatory.")
+        sys.exit(1)
+            
     try:
         db = DBManager()
-        project_id = db.create_project(args.name, requirements)
+        project_id = db.create_project(args.name, requirements, args.focus)
         print(f"[+] Project '{args.name.lower()}' created/updated successfully (ID: {project_id}).")
         db.close()
     except Exception as e:
