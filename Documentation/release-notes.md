@@ -2,6 +2,12 @@
 
 All notable changes to the Prompt Similarity Detector will be documented in this file.
 
+## [0.6.3] - 2026-01-23
+### Changed
+- **Packaging**: The `package.sh` script now automatically removes prior `.tgz` artifacts before creating a new one to prevent accumulation.
+
+---
+
 ## [0.6.2] - 2026-01-23
 ### Changed
 - **Maintenance**: Minor version bump and internal consistency updates.

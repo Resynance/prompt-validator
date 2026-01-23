@@ -80,7 +80,7 @@ To package the application for release, use the provided script:
 ```bash
 ./scripts/package.sh
 ```
-This will create a versioned `.tgz` file (e.g., `prompt-manager-v0.6.2.tgz`) containing only the necessary source code and documentation, excluding developer environments and history.
+This will create a versioned `.tgz` file (e.g., `prompt-manager-v0.6.3.tgz`) containing only the necessary source code and documentation, excluding developer environments and history.
 
 ## Technical Troubleshooting
 

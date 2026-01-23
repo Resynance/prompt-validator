@@ -20,7 +20,7 @@ def test_get_info():
     response = client.get("/api/info")
     assert response.status_code == 200
     data = response.json()
-    assert data['version'] == "0.6.2"
+    assert data['version'] == "0.6.3"
     assert data['status'] == "healthy"
 
 def test_get_projects(db):

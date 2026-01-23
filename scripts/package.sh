@@ -16,6 +16,11 @@ fi
 FILENAME="prompt-manager-v$VERSION.tgz"
 
 echo "[~] Packaging Prompt Similarity Detector v$VERSION..."
+
+# 2. Cleanup old artifacts
+echo "[~] Removing old .tgz packages..."
+rm -f *.tgz
+
 echo "[~] Creating artifact: $FILENAME"
 
 # 2. Create the archive
