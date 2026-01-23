@@ -10,7 +10,7 @@ from io import BytesIO
 from db_manager import DBManager
 from similarity_check import get_embedding, analyze_requirements
 
-VERSION = "0.6.0"
+VERSION = "0.6.1"
 
 app = FastAPI(title="Prompt Manager API")
 

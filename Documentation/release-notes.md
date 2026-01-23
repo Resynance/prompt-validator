@@ -2,6 +2,12 @@
 
 All notable changes to the Prompt Similarity Detector will be documented in this file.
 
+## [0.6.1] - 2026-01-23
+### Added
+- **Automated Packaging**: Added `scripts/package.sh` to generate versioned `.tgz` release artifacts while automatically excluding development bloat.
+
+---
+
 ## [0.6.0] - 2026-01-23
 ### Added
 - **Possible Workflow Detection**: A new analysis layer that automatically extracts and displays a step-by-step logical breakdown of user prompts.
