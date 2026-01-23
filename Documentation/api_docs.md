@@ -123,7 +123,7 @@ This document details the REST API endpoints available in the Prompt Manager bac
 *   **Response**: `200 OK`
     ```json
     {
-      "requirement_analysis": "Reasoning about compliance...",
+      "requirement_analysis": "STATUS: PASSED\nSUMMARY: Brief summary...\nWORKFLOW: 1. Step one\n2. Step two...",
       "similar_prompts": [
         { "id": 101, "prompt_text": "Existing prompt...", "similarity": 0.92, "created_at": "2026-01-20T22:54:02" }
       ],
@@ -162,5 +162,5 @@ This document details the REST API endpoints available in the Prompt Manager bac
 *   **Description**: Returns current application version and status.
 *   **Response**: `200 OK`
     ```json
-    { "version": "0.5.0", "status": "healthy", "name": "Prompt Similarity Detector" }
+    { "version": "0.6.0", "status": "healthy", "name": "Prompt Similarity Detector" }
     ```

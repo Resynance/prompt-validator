@@ -59,10 +59,11 @@ def analyze_requirements(prompt, requirements, base_url, model_name=None, projec
     url = f"{base_url}/chat/completions"
     system_prompt = (
         "You are a Quality Assurance assistant. Compare the user's prompt against the project requirements and focus areas. "
-        "Every response MUST start with either 'STATUS: PASSED' or 'STATUS: ISSUES FOUND' on the first line. "
-        "Following that, provide a very concise summary of the prompt's alignment with the requirements. "
-        "If satisfactory, explain briefly why it meets the criteria. "
-        "If there are conflicts or missing elements, provide a brief, bulleted list of specific issues. "
+        "Every response MUST follow this structured format exactly:\n\n"
+        "STATUS: [PASSED or ISSUES FOUND]\n"
+        "SUMMARY: [Concise summary of alignment with requirements]\n"
+        "WORKFLOW: [Step-by-step breakdown of the possible actions/logic in the prompt]\n"
+        "ISSUES: [Brief bulleted list of specific conflicts or missing elements, IF status is ISSUES FOUND]\n\n"
         "Be extremely concise and avoid any introductory or concluding text."
     )
     

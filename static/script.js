@@ -22,7 +22,6 @@ const resultsArea = document.getElementById('results-area');
 const lmStudioUrlInput = document.getElementById('lm-studio-url');
 const appVersionSpan = document.getElementById('app-version');
 
-let currentProject = null;
 // DOM Elements - Management
 const projectsListBody = document.getElementById('projects-list-body');
 const envManageCard = document.getElementById('env-manage-card');
@@ -369,25 +368,61 @@ window.resetPromptDatabase = async () => {
 function renderResults(data) {
     resultsArea.innerHTML = '';
 
-    // Requirements
+    // Requirements Analysis Parsing
+    const analysisText = data.requirement_analysis || "";
+    const sections = {
+        status: analysisText.includes('STATUS: PASSED') ? 'PASSED' : 'CONFLICTS',
+        summary: '',
+        workflow: '',
+        issues: ''
+    };
+
+    // Parse sections using simple regex/split
+    const summaryMatch = analysisText.match(/SUMMARY:\s*([\s\S]*?)(?=WORKFLOW:|$)/i);
+    const workflowMatch = analysisText.match(/WORKFLOW:\s*([\s\S]*?)(?=ISSUES:|$)/i);
+    const issuesMatch = analysisText.match(/ISSUES:\s*([\s\S]*?)$/i);
+
+    sections.summary = summaryMatch ? summaryMatch[1].trim() : "";
+    sections.workflow = workflowMatch ? workflowMatch[1].trim() : "";
+    sections.issues = issuesMatch ? issuesMatch[1].trim() : "";
+
+    // Requirement Compliance Card
     const reqCard = document.createElement('div');
     reqCard.className = 'result-card card animated';
-    const analysisText = data.requirement_analysis || "";
-    let isPass = analysisText.includes('STATUS: PASSED');
-
-    // Remove the status marker from the displayed text
-    const displayAnalysis = analysisText.replace(/STATUS: (PASSED|ISSUES FOUND)\n?/, '');
+    let isPass = sections.status === 'PASSED';
 
     reqCard.innerHTML = `
         <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
             <h3>Requirement Compliance</h3>
-            <span class="badge ${isPass ? 'success' : 'warning'}">${isPass ? 'PASSED' : 'CONFLICTS'}</span>
+            <span class="badge ${isPass ? 'success' : 'warning'}">${sections.status}</span>
         </div>
         <div class="card-body" style="padding: 24px;">
-            <p style="white-space: pre-wrap; font-size: 0.95rem; line-height: 1.6;">${displayAnalysis || "No requirements analysis performed."}</p>
+            <div style="margin-bottom: 20px;">
+                <h4 style="color: var(--text-dim); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Analysis Summary</h4>
+                <p style="white-space: pre-wrap; font-size: 0.95rem; line-height: 1.6;">${sections.summary || "No summary provided."}</p>
+            </div>
+            ${sections.issues ? `
+            <div style="background: rgba(239, 68, 68, 0.1); border-left: 4px solid #ef4444; padding: 16px; border-radius: 4px;">
+                <h4 style="color: #ef4444; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Issues Found</h4>
+                <p style="white-space: pre-wrap; font-size: 0.9rem; line-height: 1.5;">${sections.issues}</p>
+            </div>
+            ` : ''}
         </div>
     `;
     resultsArea.appendChild(reqCard);
+
+    // Possible Workflow Card
+    const workflowCard = document.createElement('div');
+    workflowCard.className = 'result-card card animated';
+    workflowCard.innerHTML = `
+        <div class="card-header">
+            <h3>Possible Workflow</h3>
+        </div>
+        <div class="card-body" style="padding: 24px;">
+            <p style="white-space: pre-wrap; font-size: 0.95rem; line-height: 1.6; color: var(--text-dim);">${sections.workflow || "No workflow detected."}</p>
+        </div>
+    `;
+    resultsArea.appendChild(workflowCard);
 
     // Similarity
     const simCard = document.createElement('div');

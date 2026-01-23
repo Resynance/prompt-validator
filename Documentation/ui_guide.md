@@ -26,6 +26,7 @@ This is where you'll spend most of your time analyzing prompts.
 2.  **Analyze**: Click **"Analyze Prompt"** to trigger the background processing.
 3.  **Review Results**:
     *   **Compliance Analysis**: View LLM-generated feedback on how well your prompt aligns with the project's **Core Requirements** and specific **Project Focus**.
+    *   **Possible Workflow**: Replaces complex prompts with a clear, step-by-step breakdown of what the system believes you are trying to achieve. 
     *   **Similarity Matches**: See existing prompts that are similar to your input. **Creation timestamps** are displayed alongside each match to provide historical context.
     *   **Intelligent Auto-Save**: If no similar prompts are found, the system saves your prompt automatically. If matches exist, you can choose to **"Save to Database"** manually.
 
