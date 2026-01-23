@@ -80,7 +80,7 @@ To package the application for release, use the provided script:
 ```bash
 ./scripts/package.sh
 ```
-This will create a versioned `.tgz` file (e.g., `prompt-manager-v0.6.0.tgz`) containing only the necessary source code and documentation, excluding developer environments and history.
+This will create a versioned `.tgz` file (e.g., `prompt-manager-v0.6.2.tgz`) containing only the necessary source code and documentation, excluding developer environments and history.
 
 ## Technical Troubleshooting
 
@@ -95,3 +95,4 @@ If you switch embedding models in LM Studio (e.g., from 1536-dim to 768-dim), na
 - [AWS & Multi-User Roadmap](Documentation/aws_and_multiuser_roadmap.md): Strategy for scaling to the cloud and multiple tenants.
 - [Testing Guide](Documentation/testing_guide.md): Details on the automated test suite and how to run it.
 - [REST API Documentation](Documentation/api_docs.md): Technical details for programmatic interaction.
+- [Release Notes](Documentation/release-notes.md): Chronological record of features and fixes.

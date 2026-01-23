@@ -2,6 +2,12 @@
 
 All notable changes to the Prompt Similarity Detector will be documented in this file.
 
+## [0.6.2] - 2026-01-23
+### Changed
+- **Maintenance**: Minor version bump and internal consistency updates.
+
+---
+
 ## [0.6.1] - 2026-01-23
 ### Added
 - **Automated Packaging**: Added `scripts/package.sh` to generate versioned `.tgz` release artifacts while automatically excluding development bloat.

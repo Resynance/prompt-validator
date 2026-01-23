@@ -162,5 +162,5 @@ This document details the REST API endpoints available in the Prompt Manager bac
 *   **Description**: Returns current application version and status.
 *   **Response**: `200 OK`
     ```json
-    { "version": "0.6.1", "status": "healthy", "name": "Prompt Similarity Detector" }
+    { "version": "0.6.2", "status": "healthy", "name": "Prompt Similarity Detector" }
     ```

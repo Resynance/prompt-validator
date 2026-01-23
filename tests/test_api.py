@@ -9,7 +9,19 @@ client = TestClient(app)
 def mock_llm(mocker):
     """Mocks the LLM services in similarity_check."""
     mocker.patch("app.get_embedding", return_value=[0.1] * 1536)
-    mocker.patch("app.analyze_requirements", return_value="STATUS: PASSED\nThe prompt is excellent and meets all criteria.")
+    structured_analysis = (
+        "STATUS: PASSED\n"
+        "SUMMARY: The prompt is excellent.\n"
+        "WORKFLOW: 1. Do something.\n2. Do something else."
+    )
+    mocker.patch("app.analyze_requirements", return_value=structured_analysis)
+
+def test_get_info():
+    response = client.get("/api/info")
+    assert response.status_code == 200
+    data = response.json()
+    assert data['version'] == "0.6.2"
+    assert data['status'] == "healthy"
 
 def test_get_projects(db):
     db.create_project("p1", "req1")
@@ -60,4 +72,5 @@ def test_check_prompt_flow(db, mock_llm):
     data = response.json()
     assert data['was_saved'] is True
     assert "STATUS: PASSED" in data['requirement_analysis']
-    assert "meets all criteria" in data['requirement_analysis']
+    assert "SUMMARY:" in data['requirement_analysis']
+    assert "WORKFLOW:" in data['requirement_analysis']
